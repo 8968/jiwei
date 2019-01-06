@@ -1,0 +1,27 @@
+/tangyin
+    /ctl    县级总体情况
+        /login
+
+    /fudao
+        /shop   兑换
+            /login
+        /ctl 乡级控制界面
+            /login
+
+        /huiquan   村级情况
+            /login
+            /zhangsan(md5)    贫困户情况
+
+
+
+
+以县为数据库单位
+tangyin
+
+集合名称
+全县共用一个管理员集合，以baseurl区分类型
+admins: name passwd baseUrl(domain)
+乡镇集合名前加乡镇名
+fudao.pinkunhus: id name count [items]
+fudao.shop: count [items]
+fudao.villages: name

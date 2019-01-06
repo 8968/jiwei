@@ -1,0 +1,28 @@
+{
+  "name": "fupin",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "commander": "^2.19.0",
+    "cookie-parser": "~1.4.3",
+    "cookie-session": "^2.0.0-beta.3",
+    "debug": "~2.6.9",
+    "ejs": "~2.5.7",
+    "excel": "^1.0.0",
+    "express": "~4.16.0",
+    "express-session": "^1.15.6",
+    "fawn": "^2.1.5",
+    "http-errors": "~1.6.2",
+    "inquirer": "^6.2.1",
+    "libxmljs": "^0.19.5",
+    "lodash": "^4.17.11",
+    "mongodb": "^3.1.9",
+    "mongoose": "^5.3.12",
+    "mongoose-int32": "^0.3.1",
+    "morgan": "~1.9.0"
+  }
+}

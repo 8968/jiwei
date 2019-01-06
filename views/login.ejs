@@ -1,0 +1,16 @@
+<%include header.ejs%>
+
+<div class="container text-center">
+    <p>
+    <h4> <%= name %></h4>
+    </p>
+
+<form class="mt-5" action="login" method="post">
+    <div class="form-group">
+        <input type="password" class="form-control" name="psd" placeholder="密码">
+    </div>
+    <button type="submit" class="btn btn-primary w-100">登录</button>
+</form>
+</div>
+
+<%include footer.ejs%>

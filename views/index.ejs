@@ -1,0 +1,11 @@
+<%include header.ejs%>
+
+<h1><%= title %></h1>
+<p>Welcome to <%= title %></p>
+<ul>
+    <% for(var i = 0; i < list.length; i++){ %>
+        <li>list[i]</li>
+    <% } %>
+</ul>
+
+<%include footer.ejs%>
