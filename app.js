@@ -1,8 +1,10 @@
+require('./models/connect');
+
 const createError = require('http-errors');
 const path = require('path');
 const express = require('express');
 const logger = require('morgan');
-const county = require('./countys/tangyin');
+const county = require('./countys/fudao');
 
 const countyRouter = require('./routes/county');
 
@@ -19,6 +21,9 @@ app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(`/${county.tag}`, countyRouter);
+
+//test router
+app.use('/cp', require('./routes/changePassword'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

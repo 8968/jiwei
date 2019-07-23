@@ -1,22 +1,25 @@
 const mongoose = require('mongoose');
 const Int32 = require('mongoose-int32');
+const tangyin = require('../countys/fudao');
 
-//collection name: ${town}.pinkunhus
-var pinkunhuSchema = new mongoose.Schema({
-    //身份证
-    id: {type: String, index: true, unique: true},
-    name: String,
-    village: String,    //village.tag
-    income: Int32,    //收入 正值
-    expense: Int32,   //花销 正值
+//乡镇和村级数据结构一样，以collection为单位，下面的12个分项对应document
+
+//type: 1 text 2 图片url
+
+var paragraphSchema = new mongoose.Schema({ type: Number, content: String});
+var newsSchema = new mongoose.Schema({
+    type: Number,
+    date: {type: Date, default: Date.now},
+    title: String,
+    body: [paragraphSchema]
 });
 
-//村记录总分用 collection name: ${town}.villages
-var villageSchema = new mongoose.Schema({
-    //village.tag/'shop'
-    village: {type: String, index: true, unique: true},
-    income: Int32,    //收入 正值
-    expense: Int32,   //支出 正值
+//县级collection，名称无前缀
+//县，乡，村 管理员以baseUrl来区分类型 collection name: admins
+var adminSchema = new mongoose.Schema({
+    //以req.baseUrl来判断用户的类型
+    baseUrl: {type: String, index: true, unique: true},
+    psd: String,    //默认为本级单位的tag
 });
 
 //把shop当作乡级单位来看（记录全乡的总分值）, collection name: shops
@@ -27,39 +30,69 @@ let shopSchema = new mongoose.Schema({
     expense: Int32,
 });
 
-//加减分详细记录 collection name: ${town}.details
-//加分 s:village.tag d:贫困户id p:分值 d:des
-//兑换商品 s:贫困户id d:'shop' p:分值 d:des
+//乡级collection，名称前有各乡镇的tag前缀
+//collection name: ${town}.pkhs
+var pkhSchema = new mongoose.Schema({
+    //身份证
+    id: {type: String, index: true, unique: true},
+    name: String,
+    village: String,    //village.tag
+    income: Int32,    //收入 正值
+    expense: Int32,   //花销 正值
+});
+
+//村记录总分用 collection name: ${town}.villages
+var villageSchema = new mongoose.Schema({
+    //village.tag
+    village: {type: String, index: true, unique: true},
+    income: Int32,    //收入 正值
+    expense: Int32,   //支出 正值
+});
+
+//交易记录，加减分详细记录 collection name: ${town}.details
 var detailSchema = new mongoose.Schema({
-    source: String,
-    destination: String,
-    payment: Int32, //正值
+    village: String,
+    //用户的id
+    id: String,
+    name: String,
+    //正值表加分，负值表消费
+    type: Int32, //1 表示income，2 表示expense
+    value: Int32,
+    //init income, init expense, income, expense,
     description: String,
 });
 
-//县，乡，村 管理员以baseUrl来区分类型 collection name: admins
-var adminSchema = new mongoose.Schema({
-    //以req.baseUrl来判断用户的类型
-    baseUrl: {type: String, index: true, unique: true},
-    psd: String,
-});
-
-function pinkunhuModel(town) {
-    return mongoose.model(`${town.tag}.Pinkunhu`, pinkunhuSchema);
+var pkhModels = new Map(), villageModels = new Map(), detailModels = new Map();
+for(let town of tangyin.towns) {
+    pkhModels.set(town.tag, mongoose.model(`${town.tag}.Pkh`, pkhSchema));
+    villageModels.set(town.tag, mongoose.model(`${town.tag}.Village`, villageSchema));
+    detailModels.set(town.tag, mongoose.model(`${town.tag}.Detail`, detailSchema));
 }
 
-function villageModel(town) {
-    return mongoose.model(`${town.tag}.Village`, villageSchema);
+function pinkunhuModel(townTag) {
+    // return mongoose.model(`${townTag}.Pkh`, pkhSchema);
+    return pkhModels.get(townTag);
 }
 
-function detailModel(town) {
-    return mongoose.model(`${town.tag}.Detail`, detailSchema);
+function villageModel(townTag) {
+    // return mongoose.model(`${townTag}.Village`, villageSchema);
+    return villageModels.get(townTag);
 }
+
+function detailModel(townTag) {
+    // return mongoose.model(`${townTag}.Detail`, detailSchema);
+    return detailModels.get(townTag);
+}
+
+var AdminModel = mongoose.model('Admin', adminSchema);
+var ShopModel = mongoose.model('Shop', shopSchema);
 
 module.exports = {
-    getPinkunhuModel: pinkunhuModel,
+    //
+    AdminModel: AdminModel,
+    ShopModel: ShopModel,
+    //
+    getPkhModel: pinkunhuModel,
     getVillageModel: villageModel,
     getDetailModel: detailModel,
-    AdminModel: mongoose.model('Admin', adminSchema),
-    ShopModel: mongoose.model('Shop', shopSchema),
 };

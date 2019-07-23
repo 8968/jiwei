@@ -1,0 +1,30 @@
+县级配置文件放countys目录下： 例如tangyin.js
+
+[一]
+node initUsers.js
+读取tangyin.js配置文件，初始化各个管理员密码
+
+[二]
+初始数据要求
+目录结构,tag要和countys/tangyin.js中的tag保持一致
+    县tag
+        乡镇tag
+            村tag.excel [四列分别为 身份证号，姓名，总积分，总兑换， 第一行为表头，以下为数据]
+
+初始化贫困户，各村及乡shop数据
+step1
+node excel2Json.js -d tangyin
+转换excel为json文件,json文件和excel文件名及位置相同，文件扩展名不同。
+
+step2
+node mergeJson.js -d tangyin
+在县及目录下生成'.out'目录，其中的
+ ${town}-pkhs.json 对应乡镇的贫困户
+ ${town}-villages.json 对应乡镇下的各村的汇总
+ shops.json 对应各乡镇的shop汇总
+
+step3
+node initDatas.js -d tangyin
+导入产生的json数据到mongodb
+
+//运行时如有错误产生，运行db.dropDatabase()

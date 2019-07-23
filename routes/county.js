@@ -2,7 +2,7 @@ var express = require('express');
 var createTownRouter = require('./createTownRouter');
 var countyCtlRouter = require('./countyCtl');
 
-var county = require('../countys/tangyin.js');
+var county = require('../countys/fudao.js');
 
 var router = express.Router();
 router.use('/ctl', countyCtlRouter);

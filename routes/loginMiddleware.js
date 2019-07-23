@@ -1,5 +1,4 @@
 //county , town , village 通用
-const db = require('../models/connect.js');
 const { AdminModel } = require('../models/models.js');
 
 //将user 设置为baseUrl， 以此来判断是否登录

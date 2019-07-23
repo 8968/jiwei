@@ -1,9 +1,9 @@
-//初始化用户和密码
+//初始化用户和密码, 密码默认为各单位的tag
 const db = require('../connect.js');
 const models = require('../models.js');
 
 //读取配置文件
-const county = require('../../countys/tangyin');
+const county = require('../../countys/fudao');
 
 //add county admin
 var countyAdmin = new models.AdminModel({
@@ -27,8 +27,9 @@ for(const town of county.towns) {
             console.log(err);
     });
 
+    //  /tangyin/fudao/shop/login
     let shopAdmin = new models.AdminModel({
-        baseUrl: `/${county.tag}/${town.tag}/shop/ctl`,
+        baseUrl: `/${county.tag}/${town.tag}/shop`,
         psd: town.tag,
     });
     shopAdmin.save((err, admin) => {

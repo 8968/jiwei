@@ -3,6 +3,8 @@ const session = require('cookie-session');
 
 var {maxAge, checkLogin, postLogin } = require('./loginMiddleware.js');
 
+const {getVillageModel} = require('../models/models');
+
 module.exports = function createTownCtlRouter(town) {
     const router = express.Router();
     router.use(session({
@@ -13,8 +15,11 @@ module.exports = function createTownCtlRouter(town) {
 
     router.use(checkLogin(town));
 
+    let VillageModel = getVillageModel(town.tag);
     router.get('/', (req, res) => {
-        res.send('town ctl');
+        VillageModel.find().then( (villages) => {
+            res.render('townCtl.ejs', {villages: villages});
+        });
     });
 
     router.get('/login', function(req, res, next) {
