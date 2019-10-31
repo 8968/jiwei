@@ -19,7 +19,7 @@
     "http-errors": "~1.6.2",
     "inquirer": "^6.2.1",
     "libxmljs": "^0.19.5",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "mongodb": "^3.1.9",
     "mongoose": "^5.3.12",
     "mongoose-int32": "^0.3.1",
