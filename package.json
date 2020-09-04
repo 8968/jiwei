@@ -20,7 +20,7 @@
     "inquirer": "^6.2.1",
     "libxmljs": "^0.19.5",
     "lodash": "^4.17.11",
-    "mongodb": "^3.1.9",
+    "mongodb": "^3.1.13",
     "mongoose": "^5.3.12",
     "mongoose-int32": "^0.3.1",
     "morgan": "~1.9.0"
